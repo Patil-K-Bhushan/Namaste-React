@@ -1,0 +1,60 @@
+/* Category container */
+.menu-category {
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+/* Category header */
+.menu-category-header {
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px 0;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect */
+.menu-category-header:hover {
+  color: #ff5200;
+}
+
+/* Arrow styling */
+.accordion-arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+  color: #666;
+}
+
+/* Rotate arrow when open */
+.accordion-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Items container */
+.menu-items {
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Smooth open animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

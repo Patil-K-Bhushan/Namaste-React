@@ -1,0 +1,47 @@
+.restaurants-container {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.restaurants-title {
+  font-size: 24px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #02060c;
+  margin-bottom: 20px;
+}
+
+.restaurants-grid {
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  column-gap: 10px;
+  row-gap: 20px;
+}
+
+.restaurants-grid a {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* Changed from flex */
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #686b78;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.error-message {
+  text-align: center;
+  color: red;
+  padding: 15px;
+}

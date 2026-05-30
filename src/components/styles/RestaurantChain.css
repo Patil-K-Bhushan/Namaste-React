@@ -1,0 +1,53 @@
+.RestaurantChain {
+  margin: 40px 0;
+}
+
+.ChainTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+}
+
+.ChainTitle h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #02060c;
+}
+
+.Arrows {
+  display: flex;
+  gap: 12px;
+}
+
+.Arrows svg {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 50%;
+  background: #f2f2f3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.Arrows svg:hover {
+  background: #e2e2e7;
+}
+
+.ChainCards {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.ChainCards::-webkit-scrollbar {
+  display: none;
+}
+
+.ChainCards a {
+  flex: 0 0 320px;
+  text-decoration: none;
+}

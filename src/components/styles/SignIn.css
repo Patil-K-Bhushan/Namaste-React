@@ -1,0 +1,113 @@
+.signin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(40, 44, 63, 0.7);
+  z-index: 999;
+}
+
+.signin-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 540px;
+  height: 100vh;
+  background: white;
+  z-index: 1000;
+  padding: 40px;
+  box-sizing: border-box;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    right: -540px;
+  }
+
+  to {
+    right: 0;
+  }
+}
+
+.close-btn {
+  border: none;
+  background: none;
+  font-size: 30px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.signin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.signin-header h1 {
+  font-size: 42px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.signin-header p {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.signin-header span {
+  color: #fc8019;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signin-header img {
+  width: 110px;
+  height: 110px;
+}
+
+.underline {
+  width: 40px;
+  height: 2px;
+  background: black;
+  margin-top: 20px;
+}
+
+.signin-container input {
+  width: 100%;
+  height: 70px;
+  margin-top: 40px;
+  padding: 0 20px;
+  font-size: 18px;
+  border: 1px solid #d4d5d9;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.login-btn {
+  width: 100%;
+  height: 55px;
+  border: none;
+  background: #fc8019;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #f06f00;
+}
+
+.terms {
+  margin-top: 18px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #686b78;
+}
+
+.terms b {
+  color: #282c3f;
+}
