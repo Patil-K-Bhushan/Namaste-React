@@ -10,12 +10,31 @@ const Search = () => {
   const [item, setItem] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
 
   const fetchData = async () => {
-    const res = await fetch(PRE_SEARCH);
-    const json = await res.json();
-    setHeading(json?.data?.cards?.[1]?.card?.card?.header?.title);
-    setItem(json?.data?.cards?.[1]?.card?.card?.imageGridCards?.info);
+    try {
+      const res = await fetch(PRE_SEARCH);
+
+      if (!res.ok) {
+        throw new Error(`HTTP Error ${res.status}`);
+      }
+
+      const json = await res.json();
+
+      console.log("PRE_SEARCH Response:", json);
+
+      setHeading(
+        json?.data?.cards?.[1]?.card?.card?.header?.title || ""
+      );
+
+      setItem(
+        json?.data?.cards?.[1]?.card?.card?.imageGridCards?.info || []
+      );
+    } catch (err) {
+      console.error("PRE_SEARCH Error:", err);
+      setError("Unable to load cuisines");
+    }
   };
 
   useEffect(() => {
@@ -23,7 +42,10 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setQuery(searchText.trim()), 300);
+    const timer = setTimeout(() => {
+      setQuery(searchText.trim());
+    }, 300);
+
     return () => clearTimeout(timer);
   }, [searchText]);
 
@@ -31,6 +53,7 @@ const Search = () => {
     <div className="search-page">
       <div className="search-container">
         <CiSearch className="search-icon" />
+
         <input
           type="text"
           placeholder="Search for restaurants and food"
@@ -39,26 +62,36 @@ const Search = () => {
         />
       </div>
 
+      {error && <p className="error-message">{error}</p>}
+
       {query ? (
         <SearchResult query={query} />
       ) : (
         <>
-          <div className="heading">{heading}</div>
-          <div className="cuisine-crousel">
-            {item?.map((cuisine) => (
-              <img
-                key={cuisine.id}
-                src={IMG_CDN + cuisine.imageId}
-                alt="cuisine"
-                onClick={() => {
-                  const q = decodeURIComponent(
-                    cuisine.action.link.split("query=")[1]
-                  );
-                  setSearchText(q);
-                }}
-              />
-            ))}
-          </div>
+          {heading && (
+            <div className="heading">
+              {heading}
+            </div>
+          )}
+
+          {item.length > 0 && (
+            <div className="cuisine-crousel">
+              {item.map((cuisine) => (
+                <img
+                  key={cuisine.id}
+                  src={IMG_CDN + cuisine.imageId}
+                  alt="cuisine"
+                  onClick={() => {
+                    const q = decodeURIComponent(
+                      cuisine.action.link.split("query=")[1]
+                    );
+
+                    setSearchText(q);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

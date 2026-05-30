@@ -31,6 +31,8 @@ const Header = () => {
     0,
   );
 
+  console.log(isMenuOpen);
+
   return (
     <div className="Header">
       <div className="Logo-Container">
@@ -41,7 +43,6 @@ const Header = () => {
         className={`hamburger ${isMenuOpen ? "open" : ""}`}
         onClick={toggleMenu}
         aria-label="Toggle menu"
-        style={{ zIndex: 1000 }}
       >
         <span></span>
         <span></span>

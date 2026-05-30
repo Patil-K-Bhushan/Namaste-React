@@ -4,44 +4,157 @@
   padding: 30px 20px;
 }
 
+/* ==========================
+   Search Box
+   ========================== */
 .search-container {
   width: 100%;
-  height: 60px;
-  border: 1px solid #ddd;
+  min-height: 60px;
+  border: 1.5px solid #d4d5d9;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  background: white;
+  padding: 0 16px;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.search-container:focus-within {
+  border-color: #fc8019;
+  box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.12);
 }
 
 .search-icon {
-  font-size: 28px;
-  color: #666;
+  font-size: 24px;
+  color: #686b78;
+  flex-shrink: 0;
 }
 
 .search-container input {
   flex: 1;
   border: none;
   outline: none;
-  margin-left: 15px;
-  font-size: 18px;
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #282c3f;
+  background: transparent;
 }
 
+.search-container input::placeholder {
+  color: #93959f;
+  font-weight: 400;
+}
+
+/* ==========================
+   Heading
+   ========================== */
 .heading {
   margin-top: 40px;
   font-size: 24px;
   font-weight: 700;
+  color: #282c3f;
 }
 
+/* ==========================
+   Cuisine Carousel
+   ========================== */
 .cuisine-crousel {
   margin-top: 20px;
   display: flex;
   gap: 20px;
   overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 10px;
+}
+
+.cuisine-crousel::-webkit-scrollbar {
+  display: none;
 }
 
 .cuisine-crousel img {
   width: 140px;
   cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.cuisine-crousel img:hover {
+  transform: scale(1.05);
+}
+
+/* ==========================
+   Tablet
+   ========================== */
+@media screen and (max-width: 768px) {
+  .search-page {
+    padding: 20px 15px;
+  }
+
+  .search-container {
+    min-height: 55px;
+    padding: 0 15px;
+  }
+
+  .search-icon {
+    font-size: 22px;
+  }
+
+  .search-container input {
+    font-size: 15px;
+  }
+
+  .heading {
+    font-size: 20px;
+    margin-top: 30px;
+  }
+
+  .cuisine-crousel img {
+    width: 120px;
+  }
+}
+
+/* ==========================
+   Mobile
+   ========================== */
+@media screen and (max-width: 480px) {
+  .search-page {
+    padding: 16px;
+  }
+
+  .search-container {
+    min-height: 52px;
+    border-radius: 10px;
+    padding: 0 14px;
+  }
+
+  .search-icon {
+    font-size: 20px;
+  }
+
+  .search-container input {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+
+  .heading {
+    font-size: 18px;
+    margin-top: 24px;
+  }
+
+  .cuisine-crousel {
+    gap: 12px;
+  }
+
+  .cuisine-crousel img {
+    width: 100px;
+  }
+}
+
+.error-message {
+  margin-top: 20px;
+  color: #e53935;
+  font-weight: 600;
+  text-align: center;
 }
