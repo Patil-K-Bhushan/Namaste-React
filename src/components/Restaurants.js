@@ -8,23 +8,29 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
 
   const [visibleRestaurants, setVisibleRestaurants] = useState([]);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   const loaderRef = useRef(null);
 
-  // Initial Load
   useEffect(() => {
-    if (Restaurants?.length) {
-      setVisibleRestaurants(
-        Restaurants.slice(0, ITEMS_PER_LOAD)
-      );
+    console.log("Restaurants Prop:", Restaurants);
+
+    if (Restaurants && Restaurants.length > 0) {
+      const initialRestaurants = Restaurants.slice(0, ITEMS_PER_LOAD);
+
+      console.log("Initial Restaurants:", initialRestaurants);
+
+      setVisibleRestaurants(initialRestaurants);
 
       setPage(1);
+
       setHasMore(Restaurants.length > ITEMS_PER_LOAD);
+    } else {
+      setVisibleRestaurants([]);
+      setHasMore(false);
     }
   }, [Restaurants]);
 
-  // Load More Restaurants
   const loadMoreRestaurants = () => {
     if (!hasMore || !Restaurants?.length) return;
 
@@ -34,10 +40,7 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
     const nextRestaurants = Restaurants.slice(start, end);
 
     if (nextRestaurants.length > 0) {
-      setVisibleRestaurants((prev) => [
-        ...prev,
-        ...nextRestaurants,
-      ]);
+      setVisibleRestaurants((prev) => [...prev, ...nextRestaurants]);
 
       setPage((prev) => prev + 1);
     }
@@ -47,22 +50,18 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
     }
   };
 
-  // Intersection Observer
   useEffect(() => {
+    if (!hasMore) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          hasMore
-        ) {
+        if (entries[0].isIntersecting) {
           loadMoreRestaurants();
         }
       },
       {
-        root: null,
         rootMargin: "100px",
-        threshold: 0.1,
-      }
+      },
     );
 
     const currentLoader = loaderRef.current;
@@ -75,40 +74,34 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
       if (currentLoader) {
         observer.unobserve(currentLoader);
       }
-
       observer.disconnect();
     };
-  }, [page, hasMore, visibleRestaurants]);
+  }, [page, hasMore, Restaurants]);
+
+  console.log("Visible Restaurants:", visibleRestaurants);
 
   return (
     <div className="restaurants-container">
-      <h2 className="restaurants-title">
-        {RestaurantHeader}
-      </h2>
+      <h2 className="restaurants-title">{RestaurantHeader}</h2>
 
       <div className="restaurants-grid">
-        {visibleRestaurants?.map((restaurant) => (
+        {visibleRestaurants.map((restaurant) => (
           <Link
-            key={restaurant.info.id}
-            to={`/restaurant/${restaurant.info.id}`}
+            key={restaurant?.info?.id}
+            to={`/restaurant/${restaurant?.info?.id}`}
           >
-            <RestaurantCard
-              data={restaurant.info}
-            />
+            <RestaurantCard data={restaurant?.info} />
           </Link>
         ))}
       </div>
 
-      {hasMore ? (
-        <div
-          ref={loaderRef}
-          className="loading"
-        >
+      {visibleRestaurants.length === 0 && (
+        <div className="loading">No restaurants found</div>
+      )}
+
+      {hasMore && (
+        <div ref={loaderRef} className="loading">
           Loading more restaurants...
-        </div>
-      ) : (
-        <div className="loading">
-          No more restaurants to show
         </div>
       )}
     </div>

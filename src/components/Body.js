@@ -39,6 +39,8 @@ const Body = () => {
         json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants;
 
+      console.log("Restaurants from API:", restaurants);
+
       setMindData(dishes || []);
       setChainHeader(chainHeader || "");
       setChains(chains || []);
