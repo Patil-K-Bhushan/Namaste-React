@@ -24,13 +24,31 @@ const Body = () => {
 
       console.log("Response:", json);
 
-      // Keep your existing extraction code here
+      const dishes =
+        json?.data?.cards?.[0]?.card?.card?.gridElements?.infoWithStyle?.info;
+
+      const chainHeader = json?.data?.cards?.[1]?.card?.card?.header?.title;
+
+      const chains =
+        json?.data?.cards?.[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants;
+
+      const restaurantsHeader = json?.data?.cards?.[2]?.card?.card?.title;
+
+      const restaurants =
+        json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants;
+
+      setMindData(dishes || []);
+      setChainHeader(chainHeader || "");
+      setChains(chains || []);
+      setRestaurantsHeader(restaurantsHeader || "");
+      setRestaurants(restaurants || []);
     } catch (err) {
-      console.error("FETCH ERROR:", err);
-      alert("Fetch Error: " + err.message);
+      console.error("Fetch Error:", err);
+      alert(err.message);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
