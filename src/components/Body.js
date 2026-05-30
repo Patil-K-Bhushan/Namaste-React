@@ -14,45 +14,20 @@ const Body = () => {
 
   const fetchData = async () => {
     try {
+      console.log("Fetching data...");
+
       const data = await fetch(SWIGGY_API);
 
-      if (!data.ok) {
-        throw new Error("Failed to fetch");
-      }
+      console.log("Status:", data.status);
 
       const json = await data.json();
 
-      console.log(json);
+      console.log("Response:", json);
 
-      const cards = json?.data?.cards || [];
-
-      const mindCard = cards.find(
-        (c) => c?.card?.card?.id === "whats_on_your_mind",
-      );
-
-      const topRestaurantCard = cards.find(
-        (c) => c?.card?.card?.id === "top_brands_for_you",
-      );
-
-      const restaurantCard = cards.find(
-        (c) => c?.card?.card?.gridElements?.infoWithStyle?.restaurants,
-      );
-
-      setMindData(mindCard?.card?.card?.gridElements?.infoWithStyle?.info);
-
-      setChainHeader(topRestaurantCard?.card?.card?.header?.title);
-
-      setChains(
-        topRestaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants,
-      );
-
-      setRestaurantsHeader(restaurantCard?.card?.card?.title);
-
-      setRestaurants(
-        restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants,
-      );
+      // Keep your existing extraction code here
     } catch (err) {
-      console.error("Fetch Error:", err);
+      console.error("FETCH ERROR:", err);
+      alert("Fetch Error: " + err.message);
     }
   };
 
