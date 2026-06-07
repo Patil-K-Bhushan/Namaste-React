@@ -1,10 +1,10 @@
 {
-  "name": "swiggy",
+  "name": "namaste-food",
   "version": "1.0.0",
-  "description": "This is Namaste React by Akshay Saini",
+  "description": "Namaste Food — Food Delivery App built with React 18",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html && cp static/_redirects dist/",
     "test": "jest"
   },
   "repository": {
@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Patil-K-Bhushan/Namaste-React/issues"
   },
-  "homepage": "https://github.com/Patil-K-Bhushan/Namaste-React#readme",
+  "homepage": "https://namaste-food.pages.dev",
   "devDependencies": {
     "parcel": "^2.16.4"
   },
