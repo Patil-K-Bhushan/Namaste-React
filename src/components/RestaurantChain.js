@@ -1,26 +1,22 @@
-import "./styles/RestaurantChain.css"
+import "./styles/RestaurantChain.css";
 import RestaurantCard from "./RestaurantCard";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
-const RestaurantChain = ({ ChainHeader, Chains })=>{
+const RestaurantChain = ({ ChainHeader, Chains }) => {
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({
-      left: -300,
-      behavior: "smooth",
-    });
+    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollBy({
-      left: 300,
-      behavior: "smooth",
-    });
+    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
+
+  if (!Chains || Chains.length === 0) return null;
 
   return (
     <div className="RestaurantChain">
@@ -31,13 +27,19 @@ const RestaurantChain = ({ ChainHeader, Chains })=>{
           <IoMdArrowRoundForward onClick={scrollRight} />
         </div>
       </div>
+
       <div className="ChainCards" ref={scrollRef}>
-        {Chains?.map((restaurant) => (
-          <Link key={restaurant.info.id} to={"restaurant/" + restaurant.info.id}><RestaurantCard data={restaurant.info} /></Link>
+        {Chains.map((restaurant) => (
+          <Link
+            key={restaurant.info.id}
+            to={"/restaurant/" + restaurant.info.id}
+          >
+            <RestaurantCard data={restaurant.info} />
+          </Link>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default RestaurantChain;

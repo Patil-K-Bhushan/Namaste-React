@@ -59,7 +59,7 @@
 /* ==========================
    Cuisine Carousel
    ========================== */
-.cuisine-crousel {
+.cuisine-carousel {
   margin-top: 20px;
   display: flex;
   gap: 20px;
@@ -69,18 +69,18 @@
   padding-bottom: 10px;
 }
 
-.cuisine-crousel::-webkit-scrollbar {
+.cuisine-carousel::-webkit-scrollbar {
   display: none;
 }
 
-.cuisine-crousel img {
+.cuisine-carousel img {
   width: 140px;
   cursor: pointer;
   flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
-.cuisine-crousel img:hover {
+.cuisine-carousel img:hover {
   transform: scale(1.05);
 }
 
@@ -110,7 +110,7 @@
     margin-top: 30px;
   }
 
-  .cuisine-crousel img {
+  .cuisine-carousel img {
     width: 120px;
   }
 }
@@ -143,11 +143,11 @@
     margin-top: 24px;
   }
 
-  .cuisine-crousel {
+  .cuisine-carousel {
     gap: 12px;
   }
 
-  .cuisine-crousel img {
+  .cuisine-carousel img {
     width: 100px;
   }
 }

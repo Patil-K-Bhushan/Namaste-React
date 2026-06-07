@@ -1,40 +1,47 @@
-// restaurantsApi.js
-// Centralised, paginated data-access for the restaurants list.
+/**
+ * restaurantsApi.js
+ *
+ * Paginated data-access helper for the restaurants list.
+ * NOTE: This file is not currently imported by any component.
+ * It can be used in the future if you want server-side pagination
+ * by pointing PROXY_BASE at /api (the Cloudflare Pages Function).
+ *
+ * To use, import fetchRestaurants() into Restaurants.js and call it
+ * with a page number instead of slicing the Swiggy API response.
+ */
 
-const API_BASE = "https://your-api.example.com"; // TODO: replace with your real base URL
+const PROXY_BASE = "/api";
 export const PAGE_SIZE = 15;
 
 /**
  * Fetch a single page of restaurants.
- *
  * @param {number} page  1-based page number
+ * @param {{ lat: number, lng: number }} coords  User coordinates
  * @returns {Promise<{ items: Array, hasMore: boolean }>}
- *
- * Each item is expected to be shaped like:
- *   { info: { id, name, cloudinaryImageId, ... } }
- * If your backend returns a different shape, map it into that form below
- * so RestaurantCard keeps working unchanged.
  */
-export async function fetchRestaurants(page) {
-  const res = await fetch(
-    `${API_BASE}/restaurants?page=${page}&limit=${PAGE_SIZE}`
-  );
+export async function fetchRestaurants(
+  page,
+  coords = { lat: 19.2128808, lng: 73.15303109999999 }
+) {
+  const offset = (page - 1) * PAGE_SIZE;
+  const url =
+    `${PROXY_BASE}/dapi/restaurants/list/v5` +
+    `?lat=${coords.lat}&lng=${coords.lng}` +
+    `&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING` +
+    `&offset=${offset}`;
+
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new Error(`Failed to load restaurants (HTTP ${res.status})`);
   }
 
   const data = await res.json();
+  const items =
+    data?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
+      ?.restaurants ?? [];
 
-  // ---- Adapt these two lines to your backend's response shape ----
-  const items = data.restaurants ?? data.data ?? [];
-
-  // Prefer an explicit signal from the server; otherwise infer from page size
-  // (a short/empty final page means there's nothing left).
-  const hasMore =
-    typeof data.hasMore === "boolean"
-      ? data.hasMore
-      : items.length === PAGE_SIZE;
+  const hasMore = items.length === PAGE_SIZE;
 
   return { items, hasMore };
 }

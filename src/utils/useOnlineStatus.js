@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 
-const useOnlineStatus = ()=>{
+const useOnlineStatus = () => {
+  // Use navigator.onLine for the real initial state instead of hardcoding true
+  const [onlineStatus, setOnlineStatus] = useState(navigator.onLine);
 
-    const [onlineStatus, setOnlineStatus]  = useState(true);
+  useEffect(() => {
+    const goOnline  = () => setOnlineStatus(true);
+    const goOffline = () => setOnlineStatus(false);
 
-    useEffect(()=>{
+    window.addEventListener("online",  goOnline);
+    window.addEventListener("offline", goOffline);
 
-        window.addEventListener("online", () =>{
-            setOnlineStatus(true);
-        });
+    // Cleanup — prevents memory leaks on unmount
+    return () => {
+      window.removeEventListener("online",  goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
 
-        window.addEventListener("offline", ()=>{
-            setOnlineStatus(false);
-        });
-
-    }, [])
-
-    return onlineStatus;
-}
+  return onlineStatus;
+};
 
 export default useOnlineStatus;

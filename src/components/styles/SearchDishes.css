@@ -1,9 +1,33 @@
+/* ── CSS variable definitions ─────────────────────────────────────
+   These were previously undefined, causing invisible dish cards.
+   Now defined with explicit values for light and dark mode.
+   ────────────────────────────────────────────────────────────────── */
+:root {
+  --card-bg: #ffffff;
+  --border: #e9e9eb;
+  --text-dark: #282c3f;
+  --text-muted: #686b78;
+  --rating-green: #1ba672;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1e1e1e;
+    --border: #333333;
+    --text-dark: #f0f0f0;
+    --text-muted: #aaaaaa;
+    --rating-green: #24d691;
+  }
+}
+
+/* ── Grid ──────────────────────────────────────────────────────── */
 .dish-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 20px;
 }
 
+/* ── Card ──────────────────────────────────────────────────────── */
 .dish-card {
   display: flex;
   justify-content: space-between;
@@ -15,33 +39,39 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ── Text ──────────────────────────────────────────────────────── */
 .dish-details {
   flex: 1;
   min-width: 0;
 }
+
 .dish-name {
   font-size: 16px;
   font-weight: 700;
   color: var(--text-dark);
   margin: 0 0 6px;
 }
+
 .dish-price {
   font-size: 15px;
   font-weight: 600;
   color: var(--text-dark);
   margin: 0 0 6px;
 }
+
 .dish-rating {
   font-size: 13px;
   font-weight: 600;
   color: var(--rating-green);
   margin: 0 0 6px;
 }
+
 .dish-restaurant {
   font-size: 13px;
   color: var(--text-muted);
   margin: 0 0 6px;
 }
+
 .dish-desc {
   font-size: 12px;
   line-height: 1.4;
@@ -53,6 +83,7 @@
   overflow: hidden;
 }
 
+/* ── Image + button area ───────────────────────────────────────── */
 .dish-img-wrap {
   position: relative;
   flex-shrink: 0;
@@ -60,6 +91,7 @@
   align-self: flex-start;
   text-align: center;
 }
+
 .dish-img {
   width: 120px;
   height: 110px;
@@ -67,59 +99,135 @@
   border-radius: 12px;
   background: #f2f2f2;
 }
-.add-btn{
-  position:absolute;
-  top:-15px;
-  left:50%;
-  transform:translateX(-50%);
-  background:white;
-  color:#1ba672;
-  border:none;
-  padding:7px 18px;
-  border-radius:8px;
-  font-weight:700;
-  font-size:14px;
-  cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,0.15);
-  transition:all 0.3s ease;
+
+.add-btn {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: #1ba672;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
+
 .add-btn:hover {
   background: #f8f8f8;
 }
 
 .search-message {
   font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #686b78;
 }
 
-.qty-container{
-  position:absolute;
-  top:-15px;
-  left:50%;
-  transform:translateX(-50%);
-  width:110px;
-  height:38px;
-  background:white;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 12px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+.search-message.error {
+  color: #c0392b;
 }
-.qty-btn{
-  border:none;
-  background:none;
-  font-size:22px;
-  font-weight:700;
-  color:#1ba672;
-  cursor:pointer;
-  transition:0.2s;
+
+/* ── Qty controls ──────────────────────────────────────────────── */
+.qty-container {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 38px;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
-.qty-btn:hover{
-  transform:scale(1.2);
+
+.qty-btn {
+  border: none;
+  background: none;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1ba672;
+  cursor: pointer;
+  transition: 0.2s;
 }
-.qty-count{
-  font-size:16px;
-  font-weight:700;
-  color:#333;
+
+.qty-btn:hover {
+  transform: scale(1.2);
+}
+
+.qty-count {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.added-message {
+  margin-top: 24px;
+  color: #1ba672;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ── Skeletons ─────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #eeeeee 25%, #f5f5f5 50%, #eeeeee 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 6px;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin: 12px;
+}
+
+.skeleton-line.short {
+  width: 60%;
+}
+
+.skeleton-dish-img {
+  width: 120px;
+  height: 110px;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -500px 0; }
+  100% { background-position:  500px 0; }
+}
+
+/* ── Mobile ────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .dish-card {
+    flex-direction: column;
+  }
+
+  .dish-img-wrap {
+    width: 100%;
+    text-align: left;
+  }
+
+  .dish-img {
+    width: 100%;
+    height: 180px;
+  }
+
+  .add-btn,
+  .qty-container {
+    position: static;
+    transform: none;
+    margin-top: 12px;
+    display: inline-flex;
+  }
 }

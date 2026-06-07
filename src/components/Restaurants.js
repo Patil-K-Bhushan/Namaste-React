@@ -13,17 +13,10 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
   const loaderRef = useRef(null);
 
   useEffect(() => {
-    console.log("Restaurants Prop:", Restaurants);
-
     if (Restaurants && Restaurants.length > 0) {
       const initialRestaurants = Restaurants.slice(0, ITEMS_PER_LOAD);
-
-      console.log("Initial Restaurants:", initialRestaurants);
-
       setVisibleRestaurants(initialRestaurants);
-
       setPage(1);
-
       setHasMore(Restaurants.length > ITEMS_PER_LOAD);
     } else {
       setVisibleRestaurants([]);
@@ -36,12 +29,10 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
 
     const start = page * ITEMS_PER_LOAD;
     const end = start + ITEMS_PER_LOAD;
-
     const nextRestaurants = Restaurants.slice(start, end);
 
     if (nextRestaurants.length > 0) {
       setVisibleRestaurants((prev) => [...prev, ...nextRestaurants]);
-
       setPage((prev) => prev + 1);
     }
 
@@ -59,26 +50,17 @@ const Restaurants = ({ RestaurantHeader, Restaurants }) => {
           loadMoreRestaurants();
         }
       },
-      {
-        rootMargin: "100px",
-      },
+      { rootMargin: "100px" }
     );
 
     const currentLoader = loaderRef.current;
-
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
+    if (currentLoader) observer.observe(currentLoader);
 
     return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
+      if (currentLoader) observer.unobserve(currentLoader);
       observer.disconnect();
     };
   }, [page, hasMore, Restaurants]);
-
-  console.log("Visible Restaurants:", visibleRestaurants);
 
   return (
     <div className="restaurants-container">

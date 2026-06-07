@@ -5,32 +5,12 @@ import "./styles/SearchRestaurants.css";
 
 const SKELETON_COUNT = 8;
 
-const restaurantsFromCard = (inner, trust = false) => {
-  if (!inner) return [];
-
-  const grid = inner.gridElements?.infoWithStyle?.restaurants;
-
-  if (Array.isArray(grid)) {
-    return grid.map((g) => g?.info).filter((i) => i?.id);
-  }
-
-  if (!inner.info?.id) return [];
-
-  if (trust || Array.isArray(inner.info?.cuisines)) {
-    return [inner.info];
-  }
-
-  return [];
-};
-
 const parseRestaurants = (json) => {
   const cards = json?.data?.cards || [];
-
   const restaurants = [];
 
   const traverse = (obj) => {
     if (!obj || typeof obj !== "object") return;
-
     if (
       obj?.info?.id &&
       obj?.info?.name &&
@@ -38,24 +18,19 @@ const parseRestaurants = (json) => {
     ) {
       restaurants.push(obj.info);
     }
-
     Object.values(obj).forEach((value) => {
-      if (typeof value === "object") {
-        traverse(value);
-      }
+      if (typeof value === "object") traverse(value);
     });
   };
 
   cards.forEach((card) => traverse(card));
 
-  const unique = [...new Map(restaurants.map((r) => [r.id, r])).values()];
-
-  return unique;
+  // Deduplicate by restaurant id
+  return [...new Map(restaurants.map((r) => [r.id, r])).values()];
 };
 
 const SearchRestaurants = ({ query }) => {
   const navigate = useNavigate();
-
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -73,31 +48,22 @@ const SearchRestaurants = ({ query }) => {
       setError(null);
 
       try {
-        const res = await fetch(SEARCH_API + encodeURIComponent(query.trim()));
+        const res = await fetch(
+          SEARCH_API + encodeURIComponent(query.trim())
+        );
 
         if (!res.ok) {
           throw new Error(`Request failed (${res.status})`);
         }
 
         const json = await res.json();
-
         const list = parseRestaurants(json);
 
-        console.log("Parsed Restaurants:", list);
-
-        if (!ignore) {
-          setRestaurants(list);
-        }
+        if (!ignore) setRestaurants(list);
       } catch (err) {
-        console.error(err);
-
-        if (!ignore) {
-          setError(err.message || "Something went wrong");
-        }
+        if (!ignore) setError(err.message || "Something went wrong");
       } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
+        if (!ignore) setLoading(false);
       }
     };
 
@@ -134,9 +100,6 @@ const SearchRestaurants = ({ query }) => {
     return <div className="search-message">No restaurants found</div>;
   }
 
-  console.log("Restaurants:", restaurants);
-  console.log("Count:", restaurants.length);
-
   return (
     <div className="restaurant-grid">
       {restaurants.map((restaurant) => (
@@ -153,6 +116,12 @@ const SearchRestaurants = ({ query }) => {
                 : "https://via.placeholder.com/300x200?text=Restaurant"
             }
             alt={restaurant.name}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            onError={(e) => {
+              e.target.src =
+                "https://via.placeholder.com/300x200?text=Restaurant";
+            }}
           />
 
           <div className="search-restaurant-info">
@@ -162,9 +131,7 @@ const SearchRestaurants = ({ query }) => {
               <span className="search-rating">
                 ★ {restaurant.avgRating || restaurant.avgRatingString || "--"}
               </span>
-
               <span>•</span>
-
               <span>
                 {restaurant.sla?.slaString ||
                   `${restaurant.sla?.deliveryTime || "--"} mins`}

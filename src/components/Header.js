@@ -19,30 +19,30 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const onlineStatus = useOnlineStatus();
-
   const { loggedInUser } = useContext(UserContext);
-
   const cartItems = useSelector((state) => state.cart.items);
 
-  // Total quantity across all rows (3 burgers + 2 fries => 5)
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
-    0,
+    0
   );
-
-  console.log(isMenuOpen);
 
   return (
     <div className="Header">
       <div className="Logo-Container">
-        <img src={Logo} alt="Logo" className="logo-image" />
+        <img src={Logo} alt="Namaste Food logo" className="logo-image" />
       </div>
 
       <button
         className={`hamburger ${isMenuOpen ? "open" : ""}`}
         onClick={toggleMenu}
-        aria-label="Toggle menu"
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMenuOpen}
       >
         <span></span>
         <span></span>
@@ -53,32 +53,32 @@ const Header = () => {
         <ul className="nav-links">
           <li>Online Status: {onlineStatus ? "🟢" : "🔴"}</li>
           <li>
-            <Link to={"/"}>
+            <Link to={"/"} onClick={closeMenu}>
               <IoHomeOutline /> Home
             </Link>
           </li>
           <li>
-            <Link to={"/about"}>
+            <Link to={"/about"} onClick={closeMenu}>
               <IoInformationCircle /> About Us
             </Link>
           </li>
           <li>
-            <Link to={"/contact"}>
+            <Link to={"/contact"} onClick={closeMenu}>
               <IoCallSharp /> Contact Us
             </Link>
           </li>
           <li>
-            <Link to={"/cart"}>
+            <Link to={"/cart"} onClick={closeMenu}>
               <IoCartOutline /> Cart - ({totalItems} Items)
             </Link>
           </li>
           <li>
-            <Link to={"/search"}>
+            <Link to={"/search"} onClick={closeMenu}>
               <CiSearch /> Search
             </Link>
           </li>
           <li>
-            <Link to={"/signIn"}>
+            <Link to={"/signIn"} onClick={closeMenu}>
               <LuUser /> {loggedInUser}
             </Link>
           </li>

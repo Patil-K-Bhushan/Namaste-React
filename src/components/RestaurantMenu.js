@@ -10,37 +10,76 @@ const RestaurantMenu = () => {
 
   const [restaurant, setRestaurant] = useState(null);
   const [categories, setCategories] = useState([]);
-
-  const [openIndex, setOpenIndex] = useState();
+  const [openIndex, setOpenIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchMenu();
-  }, []);
+  }, [resID]);
 
   const fetchMenu = async () => {
-    const data = await fetch(MENU_API + resID);
-    const json = await data.json();
+    try {
+      setLoading(true);
+      setError(null);
 
-    const restaurantCard = json?.data?.cards?.find(
-      (card) => card?.card?.card?.info,
-    );
+      const res = await fetch(MENU_API + resID);
 
-    const restaurantInfo = restaurantCard?.card?.card?.info;
+      if (!res.ok) {
+        throw new Error(`Failed to load menu (HTTP ${res.status})`);
+      }
 
-    const regularCard = json?.data?.cards?.find((card) => card?.groupedCard);
+      const json = await res.json();
 
-    const menuCategories =
-      regularCard?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+      const restaurantCard = json?.data?.cards?.find(
+        (card) => card?.card?.card?.info
+      );
+      const restaurantInfo = restaurantCard?.card?.card?.info;
 
-    const itemCategories = menuCategories?.filter(
-      (c) => c?.card?.card?.itemCards,
-    );
+      const regularCard = json?.data?.cards?.find(
+        (card) => card?.groupedCard
+      );
+      const menuCategories =
+        regularCard?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+      const itemCategories = menuCategories?.filter(
+        (c) => c?.card?.card?.itemCards
+      );
 
-    setRestaurant(restaurantInfo);
-    setCategories(itemCategories);
+      setRestaurant(restaurantInfo || null);
+      setCategories(itemCategories || []);
+    } catch (err) {
+      setError(err.message || "Failed to load menu. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!restaurant) return <h1 className="loading-text">Loading...</h1>;
+  if (loading) {
+    return <h1 className="loading-text">Loading...</h1>;
+  }
+
+  if (error) {
+    return (
+      <div className="restaurant-menu">
+        <div className="error-state">
+          <p>⚠ {error}</p>
+          <button onClick={fetchMenu} className="retry-btn">
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!restaurant) {
+    return (
+      <div className="restaurant-menu">
+        <div className="error-state">
+          <p>Restaurant not found.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="restaurant-menu">
@@ -50,11 +89,13 @@ const RestaurantMenu = () => {
 
       {categories.map((category, index) => (
         <MenuCategory
-          key={category?.card?.card?.title}
+          key={category?.card?.card?.title + index}
           category={category?.card?.card}
           restaurantName={restaurant?.name}
           isOpen={index === openIndex}
-          setOpen={() => setOpenIndex(openIndex === index ? null : index)}
+          setOpen={() =>
+            setOpenIndex(openIndex === index ? null : index)
+          }
         />
       ))}
     </div>

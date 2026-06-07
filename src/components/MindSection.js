@@ -6,62 +6,53 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 const MindSection = ({ dishes }) => {
-
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({
-      left: -300,
-      behavior: "smooth",
-    });
+    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollBy({
-      left: 300,
-      behavior: "smooth",
-    });
+    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
+
+  if (!dishes || dishes.length === 0) return null;
 
   return (
     <div className="Mind">
-
       <div className="Title">
-
         <h3>What's on your mind?</h3>
-
         <div className="Arrows">
-          <IoMdArrowRoundBack onClick={scrollLeft} />
-          <IoMdArrowRoundForward onClick={scrollRight} />
+          <IoMdArrowRoundBack onClick={scrollLeft} aria-label="Scroll left" />
+          <IoMdArrowRoundForward onClick={scrollRight} aria-label="Scroll right" />
         </div>
-
       </div>
 
       <div className="Dishes" ref={scrollRef}>
+        {dishes.map(({ id, imageId, action }) => {
+          let collectionID = null;
+          let tag = null;
 
-        {dishes?.map(({ id, imageId, action }) => {
+          try {
+            const url = new URL(action?.link ?? "");
+            collectionID = url.searchParams.get("collection_id");
+            tag = url.searchParams.get("tags");
+          } catch {
+            // skip malformed or missing links
+          }
 
-          const url = new URL(action?.link);
-
-          const collectionID =
-            url.searchParams.get("collection_id");
-
-          const tag =
-            url.searchParams.get("tags");
+          if (!collectionID) return null;
 
           return (
-            <Link
-              key={id}
-              to={`/collection/${collectionID}/${tag}`}
-            >
+            <Link key={id} to={`/collection/${collectionID}/${tag}`}>
               <img
                 src={DISHES_URL + imageId}
-                alt={action?.text}
+                alt={action?.text ?? "Dish category"}
+                loading="lazy"
               />
             </Link>
           );
         })}
-
       </div>
     </div>
   );

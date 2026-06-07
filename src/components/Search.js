@@ -22,8 +22,6 @@ const Search = () => {
 
       const json = await res.json();
 
-      console.log("PRE_SEARCH Response:", json);
-
       setHeading(
         json?.data?.cards?.[1]?.card?.card?.header?.title || ""
       );
@@ -32,7 +30,6 @@ const Search = () => {
         json?.data?.cards?.[1]?.card?.card?.imageGridCards?.info || []
       );
     } catch (err) {
-      console.error("PRE_SEARCH Error:", err);
       setError("Unable to load cuisines");
     }
   };
@@ -68,24 +65,20 @@ const Search = () => {
         <SearchResult query={query} />
       ) : (
         <>
-          {heading && (
-            <div className="heading">
-              {heading}
-            </div>
-          )}
+          {heading && <div className="heading">{heading}</div>}
 
           {item.length > 0 && (
-            <div className="cuisine-crousel">
+            <div className="cuisine-carousel">
               {item.map((cuisine) => (
                 <img
                   key={cuisine.id}
                   src={IMG_CDN + cuisine.imageId}
-                  alt="cuisine"
+                  alt={cuisine.action?.text ?? "Cuisine"}
+                  loading="lazy"
                   onClick={() => {
                     const q = decodeURIComponent(
                       cuisine.action.link.split("query=")[1]
                     );
-
                     setSearchText(q);
                   }}
                 />

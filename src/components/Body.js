@@ -7,39 +7,40 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [mindData, setMindData] = useState([]);
-  const [chainHeader, setChainHeader] = useState();
+  const [chainHeader, setChainHeader] = useState("");
   const [chains, setChains] = useState([]);
-  const [restaurantsHeader, setRestaurantsHeader] = useState();
+  const [restaurantsHeader, setRestaurantsHeader] = useState("");
   const [restaurants, setRestaurants] = useState([]);
+  const [fetchError, setFetchError] = useState(null);
 
   const fetchData = async () => {
     try {
-      console.log("Fetching data...");
+      setFetchError(null);
 
       const data = await fetch(SWIGGY_API);
 
-      console.log("Status:", data.status);
+      if (!data.ok) {
+        throw new Error(`Server error: ${data.status}`);
+      }
 
       const json = await data.json();
-
-      console.log("Response:", json);
 
       const dishes =
         json?.data?.cards?.[0]?.card?.card?.gridElements?.infoWithStyle?.info;
 
-      const chainHeader = json?.data?.cards?.[1]?.card?.card?.header?.title;
+      const chainHeader =
+        json?.data?.cards?.[1]?.card?.card?.header?.title;
 
       const chains =
         json?.data?.cards?.[1]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants;
 
-      const restaurantsHeader = json?.data?.cards?.[2]?.card?.card?.title;
+      const restaurantsHeader =
+        json?.data?.cards?.[2]?.card?.card?.title;
 
       const restaurants =
         json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants;
-
-      console.log("Restaurants from API:", restaurants);
 
       setMindData(dishes || []);
       setChainHeader(chainHeader || "");
@@ -47,10 +48,12 @@ const Body = () => {
       setRestaurantsHeader(restaurantsHeader || "");
       setRestaurants(restaurants || []);
     } catch (err) {
-      console.error("Fetch Error:", err);
-      alert(err.message);
+      setFetchError(
+        "Unable to load restaurants right now. Please try again later."
+      );
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -59,25 +62,31 @@ const Body = () => {
 
   if (onlineStatus === false) {
     return (
-      <h1>
-        Looks like you are offline!! Please check your Internet Connection
+      <h1 className="offline-banner">
+        Looks like you are offline!! Please check your Internet Connection.
       </h1>
     );
   }
 
   return (
     <div className="Body">
-      {/* Whats on your Mind Section */}
+      {fetchError && (
+        <div className="error-banner" role="alert">
+          ⚠ {fetchError}
+        </div>
+      )}
+
+      {/* What's on your Mind Section */}
       <div className="Mind-Section">
         <MindSection dishes={mindData} />
       </div>
 
-      {/* Top Restaurants Chains in Location Section */}
+      {/* Top Restaurant Chains Section */}
       <div className="Restaurant-Chains">
         <RestaurantChain ChainHeader={chainHeader} Chains={chains} />
       </div>
 
-      {/* Restaurants with Online food delivery in Loaction */}
+      {/* Restaurants with Online Food Delivery */}
       <div className="Restaurants">
         <Restaurants
           RestaurantHeader={restaurantsHeader}
