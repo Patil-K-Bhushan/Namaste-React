@@ -1,16 +1,19 @@
+/* RestaurantCard.css */
+
 .home-restaurant-card {
   box-sizing: border-box;
-  width: 100%;                 /* fill the grid cell / carousel slot the parent sets */
+  width: 100%;
+  max-width: 320px;
   margin: 0;
+  flex-shrink: 0;              /* don't squish inside a flex row */
+  margin-right: 0;
   cursor: pointer;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #f0f0f0;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;   /* was solid black — softened; revert if you prefer */
   border-radius: 16px;
-  overflow: hidden;            /* clips the image to the rounded corners */
+  overflow: hidden;            /* clips the image to the rounded corners cleanly */
   transition: transform 0.2s ease;
-  display: flex;
-  flex-direction: column;
 }
 
 .home-restaurant-card:hover {
@@ -20,32 +23,29 @@
 .home-restaurant-img {
   display: block;
   width: 100%;
-  height: 170px;               /* fixed image height = first half of a consistent card height */
+  height: 170px;
   object-fit: cover;
-  flex-shrink: 0;
 }
 
 .home-restaurant-info {
   padding: 10px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;            /* limit to 5 lines of text */
 }
 
-/* Name — single line, ellipsis */
 .home-restaurant-name {
-  margin: 0;
+  margin: 0 0 4px;
   font-size: 18px;
   font-weight: 600;
   color: #02060c;
-  line-height: 1.3;
-  white-space: nowrap;
+  white-space: nowrap;         /* long names truncate instead of wrapping */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .home-restaurant-info p {
-  margin: 0;
+  margin: 0 0 4px;
   font-size: 14px;
   color: #02060c;
 }
@@ -54,51 +54,45 @@
   font-weight: 500;
 }
 
-/* Cuisines — clamp to two lines and RESERVE that height so a short
-   cuisine list and a long one produce the exact same card height. */
 .home-cuisines {
   color: #686b78;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  min-height: 2.6em;           /* 2 lines × 1.3 line-height — keeps heights equal */
-  overflow-wrap: anywhere;     /* break a freakishly long unbroken token instead of overflowing */
-}
-
-/* Area — single line, ellipsis */
-.home-area {
-  color: #686b78;
-  white-space: nowrap;
+  white-space: nowrap;         /* keep cuisines on one line with "…" */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ---------- Responsive ----------
-   IMPORTANT: only type / image scale here. Width is NOT set on the card,
-   because the parent grid track (Restaurants/Collections) and the
-   carousel `.ChainCards a { flex: 0 0 320px }` already control it.
-   Setting a pixel width here previously made the card narrower than its
-   slot on tablet/phone, leaving large empty gaps. */
+.home-area {
+  color: #686b78;
+}
 
+/* ---------- Responsive ---------- */
+
+/* Tablets */
 @media (max-width: 768px) {
+  .home-restaurant-card {
+    width: 220px;
+    margin-right: 16px;
+  }
   .home-restaurant-img {
     height: 150px;
   }
 }
 
+/* Phones */
 @media (max-width: 480px) {
+  .home-restaurant-card {
+    width: 75vw;        /* shows a peek of the next card in a scroll row */
+    max-width: 280px;
+    margin-right: 14px;
+  }
   .home-restaurant-name {
     font-size: 16px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .home-restaurant-card,
-  .home-restaurant-card:hover {
-    transition: none;
-    transform: none;
-  }
+.home-restaurant-row {
+  display: flex;
+  overflow-x: auto;
+  padding: 4px 16px 16px;
+  -webkit-overflow-scrolling: touch;  /* momentum scroll on iOS */
 }
