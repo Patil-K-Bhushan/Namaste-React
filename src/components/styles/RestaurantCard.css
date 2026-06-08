@@ -51,14 +51,14 @@
   font-weight: 500;
 }
 
-.home-cuisines {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5; 
+.home-cuisines { 
   color: #686b78;
   white-space: nowrap;         /* keep cuisines on one line with "…" */
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 }
 
 .home-area {
