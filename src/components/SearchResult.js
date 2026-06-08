@@ -3,7 +3,7 @@ import SearchRestaurant from "./SearchRestaurants";
 import SearchDishes from "./SearchDishes";
 import "./styles/SearchResult.css";
 
-const SearchResult = ({ query }) => {
+const SearchResult = ({ query, coords }) => {
   const [activeTab, setActiveTab] = useState("restaurants");
 
   return (
@@ -25,9 +25,9 @@ const SearchResult = ({ query }) => {
 
       <div className="tab-content">
         {activeTab === "restaurants" ? (
-          <SearchRestaurant query={query} />
+          <SearchRestaurant query={query} coords={coords} />
         ) : (
-          <SearchDishes query={query} />
+          <SearchDishes query={query} coords={coords} />
         )}
       </div>
     </div>

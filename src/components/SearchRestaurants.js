@@ -78,7 +78,7 @@ const SearchRestaurants = ({ query, coords }) => {
     return (
       <div className="restaurant-grid">
         {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-          <div key={index} className="restaurant-card">
+          <div key={index} className="search-restaurant-card">
             <div className="skeleton skeleton-img"></div>
             <div className="skeleton skeleton-line"></div>
             <div className="skeleton skeleton-line short"></div>
