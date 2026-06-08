@@ -28,10 +28,7 @@
 }
 
 .home-restaurant-info {
-  padding: 10px 12px 12px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;            /* limit to 5 lines of text */
+  padding: 10px 12px 12px;           
 }
 
 .home-restaurant-name {
@@ -55,6 +52,9 @@
 }
 
 .home-cuisines {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; 
   color: #686b78;
   white-space: nowrap;         /* keep cuisines on one line with "…" */
   overflow: hidden;
