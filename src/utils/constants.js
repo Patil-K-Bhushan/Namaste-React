@@ -28,16 +28,19 @@ export const COLLECTION_URL = ({ lat, lng }, collectionId, tag) =>
 export const PRE_SEARCH = ({ lat, lng }) =>
   `${PROXY_BASE}/dapi/landing/PRE_SEARCH?lat=${lat}&lng=${lng}`;
 
-export const SEARCH_API = ({ lat, lng }, query) =>
-  `${PROXY_BASE}/dapi/restaurants/search/v3?lat=${lat}&lng=${lng}&trackingId=undefined&submitAction=ENTER&str=${query}`;
+const coordsOf = (coords) => coords || FALLBACK_COORDS;
+
+export const SEARCH_API = (coords, query) => {
+  const { lat, lng } = coordsOf(coords); // undefined → default, never crashes
+  return `/api/dapi/restaurants/search/v3?lat=${lat}&lng=${lng}...`;
+};
 
 // ── Location-independent image CDNs (plain strings) ─────────────────
 
 export const DISHES_URL =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/";
 
-export const IMG_CDN =
-  "https://media-assets.swiggy.com/swiggy/image/upload/";
+export const IMG_CDN = "https://media-assets.swiggy.com/swiggy/image/upload/";
 
 export const MENU_CDN =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/";
