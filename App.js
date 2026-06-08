@@ -11,13 +11,23 @@ import Search from "./src/components/Search";
 import SignIn from "./src/components/SignIn";
 import Error from "./src/components/Error";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserContext from "./src/utils/UserContext";
+import LocationContext from "./src/utils/LocationContext";
+import { getUserLocation, DEFAULT_COORDS } from "./src/utils/getLocation";
 import { Provider } from "react-redux";
 import appStore from "./src/utils/appStore";
 
 const AppLayout = () => {
   const [userName, setUserName] = useState("Sign In");
+
+  // Start with the default location, then update once the browser
+  // resolves the user's real coordinates (or keeps default if denied).
+  const [coords, setCoords] = useState(DEFAULT_COORDS);
+
+  useEffect(() => {
+    getUserLocation().then(setCoords);
+  }, []);
 
   return (
     <Provider store={appStore}>
@@ -27,10 +37,12 @@ const AppLayout = () => {
           setUserName,
         }}
       >
-        <div className="App-Layout">
-          <Header />
-          <Outlet />
-        </div>
+        <LocationContext.Provider value={coords}>
+          <div className="App-Layout">
+            <Header />
+            <Outlet />
+          </div>
+        </LocationContext.Provider>
       </UserContext.Provider>
     </Provider>
   );
@@ -42,42 +54,17 @@ const appRouter = createBrowserRouter([
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
-      {
-        path: "/",
-        element: <Body />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/restaurant/:resID",
-        element: <RestaurantMenu />,
-      },
-      {
-        path: "/collection/:collectionID/:tag",
-        element: <Collection />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/search",
-        element: <Search />,
-      },
-      {
-        path: "/signIn",
-        element: <SignIn />,
-      },
+      { path: "/", element: <Body /> },
+      { path: "/about", element: <About /> },
+      { path: "/contact", element: <Contact /> },
+      { path: "/restaurant/:resID", element: <RestaurantMenu /> },
+      { path: "/collection/:collectionID/:tag", element: <Collection /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/search", element: <Search /> },
+      { path: "/signIn", element: <SignIn /> },
     ],
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 root.render(<RouterProvider router={appRouter} />);

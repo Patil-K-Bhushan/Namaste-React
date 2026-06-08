@@ -1,11 +1,13 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { COLLECTION_URL } from "../utils/constants";
 import RestaurantCard from "./RestaurantCard";
 import "./styles/Collections.css";
+import LocationContext from "../utils/LocationContext";
 
 const Collections = () => {
   const { collectionID, tag } = useParams();
+  const coords = useContext(LocationContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [resExplore, setResExplore] = useState("");
@@ -18,7 +20,7 @@ const Collections = () => {
       setLoading(true);
       setError(null);
 
-      const data = await fetch(COLLECTION_URL(collectionID, tag));
+      const data = await fetch(COLLECTION_URL(coords, collectionID, tag));
 
       if (!data.ok) {
         throw new Error(`HTTP ${data.status}`);
@@ -51,7 +53,7 @@ const Collections = () => {
 
   useEffect(() => {
     fetchData();
-  }, [collectionID, tag]);
+  }, [collectionID, tag, coords]);
 
   if (loading) {
     return <div className="loading">Loading...</div>;

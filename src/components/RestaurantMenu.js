@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { MENU_API } from "../utils/constants";
 import RestaurantInfo from "./RestaurantInfo";
 import MenuCategory from "./MenuCategory";
 import "./styles/RestaurantMenu.css";
+import LocationContext from "../utils/LocationContext";
 
 const RestaurantMenu = () => {
   const { resID } = useParams();
+  const coords = useContext(LocationContext);
 
   const [restaurant, setRestaurant] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -16,14 +18,14 @@ const RestaurantMenu = () => {
 
   useEffect(() => {
     fetchMenu();
-  }, [resID]);
+  }, [resID, coords]);
 
   const fetchMenu = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(MENU_API + resID);
+      const res = await fetch(MENU_API(coords, resID));
 
       if (!res.ok) {
         throw new Error(`Failed to load menu (HTTP ${res.status})`);

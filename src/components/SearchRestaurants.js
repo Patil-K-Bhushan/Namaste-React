@@ -29,7 +29,7 @@ const parseRestaurants = (json) => {
   return [...new Map(restaurants.map((r) => [r.id, r])).values()];
 };
 
-const SearchRestaurants = ({ query }) => {
+const SearchRestaurants = ({ query, coords }) => {
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const SearchRestaurants = ({ query }) => {
 
       try {
         const res = await fetch(
-          SEARCH_API + encodeURIComponent(query.trim())
+          SEARCH_API(coords, encodeURIComponent(query.trim()))
         );
 
         if (!res.ok) {
@@ -72,7 +72,7 @@ const SearchRestaurants = ({ query }) => {
     return () => {
       ignore = true;
     };
-  }, [query]);
+  }, [query, coords]);
 
   if (loading) {
     return (

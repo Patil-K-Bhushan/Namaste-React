@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { CiSearch } from "react-icons/ci";
 import { PRE_SEARCH, IMG_CDN } from "../utils/constants";
 import "./styles/Search.css";
 import "./styles/SearchResult.css";
 import SearchResult from "./SearchResult";
+import LocationContext from "../utils/LocationContext";
 
 const Search = () => {
   const [heading, setHeading] = useState("");
@@ -12,9 +13,11 @@ const Search = () => {
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
 
+  const coords = useContext(LocationContext);
+
   const fetchData = async () => {
     try {
-      const res = await fetch(PRE_SEARCH);
+      const res = await fetch(PRE_SEARCH(coords));
 
       if (!res.ok) {
         throw new Error(`HTTP Error ${res.status}`);
@@ -36,7 +39,7 @@ const Search = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [coords]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,7 +65,7 @@ const Search = () => {
       {error && <p className="error-message">{error}</p>}
 
       {query ? (
-        <SearchResult query={query} />
+        <SearchResult query={query} coords={coords} />
       ) : (
         <>
           {heading && <div className="heading">{heading}</div>}

@@ -33,7 +33,7 @@ const parseDishes = (json) => {
     .filter((d) => d?.info?.id && d?.restaurant);
 };
 
-const SearchDishes = ({ query }) => {
+const SearchDishes = ({ query, coords }) => {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -92,7 +92,7 @@ const SearchDishes = ({ query }) => {
 
       try {
         const res = await fetch(
-          SEARCH_API + encodeURIComponent(query)
+          SEARCH_API(coords, encodeURIComponent(query))
         );
 
         if (!res.ok) {
@@ -133,7 +133,7 @@ const SearchDishes = ({ query }) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [query]);
+  }, [query, coords]);
 
   if (loading) {
     return (

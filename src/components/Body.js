@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import MindSection from "./MindSection";
 import RestaurantChain from "./RestaurantChain";
 import Restaurants from "./Restaurants";
 import { SWIGGY_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import LocationContext from "../utils/LocationContext";
 
 /**
  * Robust parser for the Swiggy /dapi/restaurants/list/v5 response.
@@ -60,11 +61,13 @@ const Body = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [fetchError, setFetchError] = useState(null);
 
+  const coords = useContext(LocationContext);
+
   const fetchData = async () => {
     try {
       setFetchError(null);
 
-      const data = await fetch(SWIGGY_API);
+      const data = await fetch(SWIGGY_API(coords));
 
       if (!data.ok) {
         throw new Error(`Server error: ${data.status}`);
@@ -95,7 +98,7 @@ const Body = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [coords]);
 
   const onlineStatus = useOnlineStatus();
 
