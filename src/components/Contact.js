@@ -19,7 +19,7 @@ const Contact = () => {
       <div style={styles.cardContainer}>
         {/* LinkedIn */}
         <a
-          href="https://linkedin.com/in/bhushan-patil-9b688632b/"
+          href="https://linkedin.com/in/bhushan-k-patil"
           target="_blank"
           rel="noreferrer"
           style={styles.card}
