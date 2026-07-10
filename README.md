@@ -149,6 +149,36 @@ Local State / Redux Store
 UI Rendering
 ```
 
+## Directory Structure
+
+The project has been restructured to separate concerns cleanly into distinct modules:
+
+```text
+src/
+├── assets/                  # Static assets (images, icons)
+├── components/              # Self-contained React components and their CSS files
+│   ├── About/               # About page component & styles
+│   ├── Body/                # App Body (Listing/Landing) component & styles
+│   ├── Cart/                # Cart & Checkout components & styles
+│   ├── Collections/         # Collection-based lists component & styles
+│   ├── Contact/             # Contact page component & styles
+│   ├── Error/               # Error page component & styles
+│   ├── Header/              # Navigation bar component & styles
+│   ├── MenuCategory/        # Restaurant menu category component & styles
+│   ├── MenuItem/            # Individual menu item component & styles
+│   ├── MindSection/         # "What's on your mind" section component & styles
+│   ├── RestaurantCard/      # Individual restaurant card component & styles
+│   ├── RestaurantChain/     # Restaurant chain list component & styles
+│   ├── RestaurantInfo/      # Restaurant summary info component & styles
+│   ├── RestaurantMenu/      # Detailed restaurant menu component & styles
+│   ├── Restaurants/         # Main restaurants container component & styles
+│   ├── Search/              # Restaurant/dish search page component & styles
+│   └── SignIn/              # User authenticating/signing in component & styles
+├── contexts/                # React Contexts (LocationContext, UserContext)
+├── hooks/                   # Custom React hooks encapsulating business/fetching logic
+└── utils/                   # Redux store & slices, API functions, config, and generic utilities
+```
+
 ---
 
 # ⚙️ Installation Guide

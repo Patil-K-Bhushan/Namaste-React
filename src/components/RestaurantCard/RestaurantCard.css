@@ -1,0 +1,120 @@
+.home-restaurant-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 320px;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.home-restaurant-card:hover {
+  transform: scale(0.96);
+}
+
+.home-restaurant-img {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.home-restaurant-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.home-restaurant-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #02060c;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  min-height: 50px;
+}
+
+.home-restaurant-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #02060c;
+  line-height: 1.4;
+}
+
+.home-rating {
+  font-weight: 500;
+}
+
+.home-cuisines {
+  color: #686b78;
+  font-size: 14px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  min-height: 40px;
+}
+
+.home-area {
+  color: #686b78;
+}
+
+@media (max-width: 768px) {
+  .home-restaurant-card {
+    width: 220px;
+    max-width: 220px;
+  }
+  .home-restaurant-img {
+    height: 150px;
+  }
+  .home-restaurant-name {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-restaurant-card {
+    width: 75vw;
+    max-width: 280px;
+  }
+  .home-restaurant-img {
+    height: 140px;
+  }
+  .home-restaurant-name {
+    font-size: 16px;
+    min-height: 44px;
+  }
+  .home-cuisines {
+    font-size: 13px;
+    min-height: 36px;
+  }
+}
+
+.home-restaurant-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 4px 16px 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.home-restaurant-row::-webkit-scrollbar {
+  display: none;
+}
